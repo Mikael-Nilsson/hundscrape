@@ -1,0 +1,1 @@
+I wanted to see how the turnover of available dogs was, how many are adopted and especially how often dogs get returned. So I wrote a small Python script.
