@@ -6,3 +6,8 @@ Created feature that
     > Atilla_1021, Atilla_1021, Albert_321, Atilla_1021,
     > Albert_321, Albert_321, Zipp_34, Albert_321
     > Zipp_34, Zipp_34
+
+
+[Next Steps]
+* Some kind of scheduling could be nice
+* Support for getting dogs from hundstallet would grow the usability
