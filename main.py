@@ -9,14 +9,56 @@ from PIL import Image
 from selenium import webdriver
 from datetime import date
 import os
+import re
+
+import dogcsv
 
 chromePath = "chromedriver_win32\\chromedriver.exe"
+# chromePath = "chromedriver_linux64/chromedriver"
 hundUrls = [
     "https://hundarutanhem.se/hundarna/mellanstora-hundar/",
     "https://hundarutanhem.se/hundarna/stora-hundar/"
 
 ]
 outPath = "hundar/" + date.today().strftime("%Y%m%d")
+
+dogfile = 'dogs.csv'
+
+
+def fileList():
+    return [
+        'https://hundarutanhem.se/wp-content/uploads/2020/12/Jack_848_002-150x150.jpg',
+        'https://hundarutanhem.se/wp-content/uploads/2020/12/Noelle_1320_001-150x150.jpg',
+        'https://hundarutanhem.se/wp-content/uploads/2020/12/Luna_1449_002-150x150.jpeg',
+        'https://hundarutanhem.se/wp-content/uploads/2020/10/isa_1213_009-150x150.jpg',
+        'https://hundarutanhem.se/wp-content/uploads/2020/12/Sheeba-1461_001-150x150.jpg',
+        'https://hundarutanhem.se/wp-content/uploads/2020/12/Trixie_1448_001-150x150.jpg',
+        'https://hundarutanhem.se/wp-content/uploads/2020/12/Winston_1446_001-e1608476419565-150x150.jpeg',
+        'https://hundarutanhem.se/wp-content/uploads/2020/12/Elton_1444_002-150x150.jpg',
+        'https://hundarutanhem.se/wp-content/uploads/2020/12/Seamy-885_010-150x150.jpg',
+        'https://hundarutanhem.se/wp-content/uploads/2020/12/Michael-987_001-150x150.jpg',
+        'https://hundarutanhem.se/wp-content/uploads/2020/12/Harley_1299_002-150x150.jpeg',
+        'https://hundarutanhem.se/wp-content/uploads/2020/12/Dolly_1297_001-150x150.jpeg',
+        'https://hundarutanhem.se/wp-content/uploads/2020/11/Chewbacca-1265_008-150x150.jpg',
+        'https://hundarutanhem.se/wp-content/uploads/2020/09/Max-1090_002-150x150.png',
+        'https://hundarutanhem.se/wp-content/uploads/2020/12/Naala_846_004-150x150.jpg',
+        'https://hundarutanhem.se/wp-content/uploads/2020/11/lucas-1355_001-150x150.jpg',
+        'https://hundarutanhem.se/wp-content/uploads/2020/10/barry_gary_harry_7-e1603736900570-150x150.jpeg',
+        'https://hundarutanhem.se/wp-content/uploads/2020/11/darragh_1385_001-e1605811733674-150x150.jpg',
+        'https://hundarutanhem.se/wp-content/uploads/2020/11/molly_1372_004-150x150.jpg',
+        'https://hundarutanhem.se/wp-content/uploads/2020/11/Railey_1366_025-150x150.jpg',
+        'https://hundarutanhem.se/wp-content/uploads/2020/10/atilla_1337_004-150x150.jpg',
+        'https://hundarutanhem.se/wp-content/uploads/2020/10/shadow-1331_006-150x150.jpeg',
+        'https://hundarutanhem.se/wp-content/uploads/2020/10/prince-1328_001-150x150.jpeg',
+        'https://hundarutanhem.se/wp-content/uploads/2020/10/Johnny-Utah_1226_016-1-150x150.jpg',
+        'https://hundarutanhem.se/wp-content/uploads/2020/09/Max-1157_010-150x150.jpg',
+        'https://hundarutanhem.se/wp-content/uploads/2020/05/skip_717_005-e1600414561927-150x150.png',
+        'https://hundarutanhem.se/wp-content/uploads/2020/09/Robin-1097_002-150x150.jpg',
+        'https://hundarutanhem.se/wp-content/uploads/2020/09/Alfred-1091_001-150x150.jpeg',
+        'https://hundarutanhem.se/wp-content/uploads/2020/08/JJ_1046_001-150x150.jpg',
+        'https://hundarutanhem.se/wp-content/uploads/2020/08/Jojken-914_007-150x150.jpg',
+        'https://hundarutanhem.se/wp-content/uploads/2020/05/Charlie-Brown_415_014-150x150.jpg'
+    ]
 
 def get_content_from_url(url):
     # add "executable_path=" if driver not in running directory
@@ -66,19 +108,61 @@ def get_images_from_url(url):
         content=content, classes="polaroid", location="img", source="src",
     )
     save_urls_to_csv(image_urls)
+    save_names_to_csv(image_urls)
 
     if not os.path.isdir(outPath):
         os.mkdir(outPath)
 
     for image_url in image_urls:
+        print(image_url)
         get_filename_from_url(image_url)
         get_and_save_image_to_file(
             image_url, output_dir=pathlib.Path(outPath),
         )
 
+def save_names_to_csv(image_urls):
+    dogs=dogcsv.readCsv(dogfile, ',')
+
+    dogNames = []
+    for url in image_urls:
+        dogNames.append(dogname_from_url(url))
+        
+        
+    dogs = dogcsv.addDate(dogs, dogNames, date.today().strftime("%Y%m%d"))
+    dogcsv.writeCsv(dogs, dogfile, ',')
+
+def dogname_from_url(stringToSearch):
+    idx = 0
+    newIdx = 0
+    failsafe = 1000
+    while newIdx != -1 and failsafe > 0:
+        failsafe -=1
+        newIdx = stringToSearch.find('/', idx+1)
+        length = len(stringToSearch)-newIdx
+
+        if not newIdx == -1:
+            idx = newIdx
+
+    fullName = stringToSearch[idx+1:len(stringToSearch)]
+
+    # surNameIdx = fullName.find('.', len(fullName)-5) # not needed
+    # firstName = fullName[0:surNameIdx]
+    dogIdSpan = re.search(r"-\d+x\d+", fullName)
+
+    dogName = fullName[0:dogIdSpan.start()]
+    
+    return dogName
+
+
 def main():
     for url in hundUrls:
         get_images_from_url(url)
+
+    # files = fileList()
+
+    # for path in files:
+    #     dogName = dogname_from_url(path)
+        
 
 
 # if __name__ == "__main__":  #only executes if imported as main file
