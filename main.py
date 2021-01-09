@@ -94,8 +94,7 @@ def get_images_from_url(url):
 
 
 ## adds current list of dog names to csv file
-def save_names_to_csv(image_urls):
-    dogs=dogcsv.readCsv(dogfile, ',')
+    dogs, fields=dogcsv.readCsv(dogfile, ',')
 
     dogNames = []
     for url in image_urls:

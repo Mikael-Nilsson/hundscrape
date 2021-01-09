@@ -5,16 +5,18 @@ def readCsv(path, delimiter):
 	dogs =[]
 	with open(path) as file:
 		reader  = csv.DictReader(file, delimiter =	delimiter)
+		fields = reader.fieldnames if reader.fieldnames is not None else []
 		for row in reader:
 			lines+=1
 			dogs.append(row)
 				
 		print(f'read  {lines} lines')
-		return dogs
+		return dogs, fields
 
 
-def writeCsv(dogs, path, delimiter):
-	fields = list(dogs[0].keys())
+def writeCsv(dogs, fields, path, delimiter):
+	print('writing fields')
+	print(fields)
 
 	with open(path, 'w') as file:
 		writer = csv.DictWriter(file, fieldnames = fields)
