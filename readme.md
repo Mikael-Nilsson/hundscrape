@@ -4,10 +4,12 @@
 
 20201229: Created feature that 
 * get the dog and id, save in csv for date. This lends the possibility to easier see if a dog has been adopted and then returned to the shelter. Example:
-*   > 20201207,20201214,20201221,20201228
-    > Atilla_1021,Atilla_1021,Albert_321,Atilla_1021,
-    > Albert_321,Albert_321,Zipp_34,Albert_321
-    > Zipp_34,,Zipp_34
+```
+20201207,20201214,20201221,20201228
+Atilla_1021,Atilla_1021,Albert_321,Atilla_1021,
+Albert_321,Albert_321,Zipp_34,Albert_321
+Zipp_34,,Zipp_34
+```
 
 
 [Next Steps]
