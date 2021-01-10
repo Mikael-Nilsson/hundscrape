@@ -16,16 +16,16 @@ import dogcsv
 chromePath = "chromedriver_win32\\chromedriver.exe"
 # chromePath = "chromedriver_linux64/chromedriver"
 shelters = [
-    # {   "name": "hundarutanhem",
-    #     "url": [
-    #         "https://hundarutanhem.se/hundarna/mellanstora-hundar/",
-    #         "https://hundarutanhem.se/hundarna/stora-hundar/"
-    #     ],
-    #     "element_tree": {
-    #         "classes": "polaroid", "location": "img", "source": "src"
-    #     },
-    #     "outfile": "hundarutanhem.csv"
-    # },
+    {   "name": "hundarutanhem",
+        "url": [
+            "https://hundarutanhem.se/hundarna/mellanstora-hundar/",
+            "https://hundarutanhem.se/hundarna/stora-hundar/"
+        ],
+        "element_tree": {
+            "classes": "polaroid", "location": "img", "source": "src"
+        },
+        "outfile": "hundarutanhem.csv"
+    },
     {
         "name": "hundstallet",
         "url": ["https://hundstallet.se/soker-hem/"],
