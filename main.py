@@ -12,6 +12,7 @@ import os
 import re
 
 import dogcsv
+import dogbox
 
 chromePath = "chromedriver_win32\\chromedriver.exe"
 # chromePath = "chromedriver_linux64/chromedriver"
@@ -43,6 +44,9 @@ shelters = [
 def outPath(shelter):
     return "hundar/" + shelter["name"] + "/" + date.today().strftime("%Y%m%d")
 
+## return folder path on dropbox
+def dropbox_path(shelter):
+    return "/hundar/" + shelter["name"] + "/" + date.today().strftime("%Y%m%d")
 
 ## downloads content of chosen url
 def get_content_from_url(url):
@@ -79,8 +83,9 @@ def get_and_save_image_to_file(image_url, output_dir):
     image_file = io.BytesIO(image_content)
     image = Image.open(image_file).convert("RGB")
     filename = get_filename_from_url(image_url) + ".png"
-    file_path = output_dir / filename
-    image.save(file_path, "PNG", quality=80)
+    file_path = output_dir + '/' + filename
+    # image.save(file_path, "PNG", quality=80)
+    dogbox.upload_data(image_content, file_path)
 
 
 # finds filename part of url
@@ -92,14 +97,14 @@ def get_filename_from_url(url):
 
 
 # Saves all images from site on url
-def save_images_from_shelter(shelter):
+def download_dogs_from_shelter(shelter):
 
     image_urls = []
 
-    outFolder = outPath(shelter)
+    outFolder = dropbox_path(shelter)
 
-    if not os.path.isdir(outFolder):
-        os.mkdir(outFolder)
+    # if not os.path.isdir(outFolder):
+    #     os.mkdir(outFolder)
 
     ## TODO: This block will need to be updated for other dog shelters
     for url in shelter["url"]:
@@ -118,7 +123,8 @@ def save_images_from_shelter(shelter):
         print(image_url)
         get_filename_from_url(image_url)
         get_and_save_image_to_file(
-            image_url, output_dir=pathlib.Path(outFolder),
+            # image_url, output_dir=pathlib.Path(outFolder),
+            image_url, output_dir=outFolder,
         )
 
 
@@ -163,7 +169,8 @@ def dogname_from_url(stringToSearch):
 
 def main():
     for shelter in shelters:
-        save_images_from_shelter(shelter)
+    # shelter = shelters[0]
+        download_dogs_from_shelter(shelter)
 
 
 
