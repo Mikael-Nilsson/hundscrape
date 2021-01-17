@@ -14,8 +14,8 @@ import re
 import dogcsv
 import dogbox
 
-chromePath = "chromedriver_win32\\chromedriver.exe"
-# chromePath = "chromedriver_linux64/chromedriver"
+chrome_path = "chromedriver_win32\\chromedriver.exe"
+# chrome_path = "chromedriver_linux64/chromedriver"
 shelters = [
     {   "name": "hundarutanhem",
         "url": [
@@ -51,7 +51,7 @@ def dropbox_path(shelter):
 ## downloads content of chosen url
 def get_content_from_url(url):
     # add "executable_path=" if driver not in running directory
-    driver = webdriver.Chrome(chromePath)
+    driver = webdriver.Chrome(chrome_path)
     driver.get(url)
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
     page_content = driver.page_source
