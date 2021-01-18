@@ -5,8 +5,8 @@ from dropbox.files import WriteMode
 import io
 import os
 
-APP_KEY = "flwxwqoh3slg386"
-APP_SECRET = "6c0gpgd7cnqyaui"
+APP_KEY = os.getenv('DROPBOX_KEY', 'no dropbox key')
+APP_SECRET = os.getenv('DROPBOX_SECRET', 'no dropbox secret')
 auth_flow = DropboxOAuth2FlowNoRedirect(APP_KEY, APP_SECRET)
 
 
