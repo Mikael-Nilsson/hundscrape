@@ -38,15 +38,16 @@ shelters = [
 ]
 
 
-# dogfile = 'dogs.csv'
+dogfolder = "/" + os.getenv('DROPBOX_DOGFOLDER', 'no dropbox folder')
+
 
 ## returns folder path
 def outPath(shelter):
-    return "hundar/" + shelter["name"] + "/" + date.today().strftime("%Y%m%d")
+    return "/hundar/" + shelter["name"] + "/" + date.today().strftime("%Y%m%d")
 
 ## return folder path on dropbox
 def dropbox_path(shelter):
-    return "/hundar/" + shelter["name"] + "/" + date.today().strftime("%Y%m%d")
+    return dogfolder + "/" + shelter["name"] + "/" + date.today().strftime("%Y%m%d")
 
 ## downloads content of chosen url
 def get_content_from_url(url):
@@ -116,8 +117,8 @@ def download_dogs_from_shelter(shelter):
         )
         image_urls.extend(url_list)
 
-    save_urls_to_csv(image_urls)
-    save_names_to_csv(image_urls, shelter["outfile"])
+    # save_urls_to_csv(image_urls)
+    save_names_to_csv(image_urls, dogfolder + "/" + shelter["outfile"])
 
     for image_url in image_urls:
         print(image_url)
@@ -130,7 +131,7 @@ def download_dogs_from_shelter(shelter):
 
 ## adds current list of dog names to csv file
 def save_names_to_csv(image_urls, dogfile):
-    dogs, fields=dogcsv.readCsv(dogfile, ',')
+    dogs, fields=dogbox.read_csv(dogfile, ",")
 
     dogNames = []
     for url in image_urls:
@@ -140,7 +141,8 @@ def save_names_to_csv(image_urls, dogfile):
         
     dogs = dogcsv.addDate(dogs, dogNames, today)
     fields.append(today)
-    dogcsv.writeCsv(dogs, fields, dogfile, ',')
+    # dogcsv.write_csv_file(dogs, fields, dogfile, ',')
+    dogbox.write_csv(dogs, fields, dogfile, ',')
 
 
 ## extracts dog name from image url
@@ -169,8 +171,8 @@ def dogname_from_url(stringToSearch):
 
 def main():
     for shelter in shelters:
-    # shelter = shelters[0]
         download_dogs_from_shelter(shelter)
+
 
 
 

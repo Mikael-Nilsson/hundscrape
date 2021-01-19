@@ -1,7 +1,8 @@
 import csv
+import json
 
-def readCsv(path, delimiter):
-	lines =0
+def read_csv_file(path, delimiter):
+	lines = 0
 	dogs =[]
 	with open(path) as file:
 		reader  = csv.DictReader(file, delimiter =	delimiter)
@@ -9,12 +10,12 @@ def readCsv(path, delimiter):
 		for row in reader:
 			lines+=1
 			dogs.append(row)
-				
-		print(f'read  {lines} lines')
+
+		print(f'read {lines} lines')
 		return dogs, fields
 
 
-def writeCsv(dogs, fields, path, delimiter):
+def write_csv_file(dogs, fields, path, delimiter):
 	print('writing fields')
 	print(fields)
 
@@ -23,9 +24,9 @@ def writeCsv(dogs, fields, path, delimiter):
 		writer.writeheader()
 		writer.writerows(dogs)
 
-		
+
 def addDate(dogs, doglist, date):
-	
+
 	for name in doglist:
 		print(f'handling {name}')
 		if name != '':
@@ -42,12 +43,9 @@ def addDate(dogs, doglist, date):
 				newDog = {f'{date}':f'{name}'}
 				dogs.append(newDog)
 				print(newDog)
-			
-			
-
 	return dogs
-	
-	
+
+
 def findDogIndex(dogs, name):
 	if len(dogs) > 0:
 		for idx, dog in enumerate(dogs):
