@@ -1,0 +1,39 @@
+
+plugins:
+  - serverless-python-requirements
+
+service:
+  name: hundscrape
+
+provider:
+  name: aws
+  runtime: python3.8
+  stage: test
+  region: ${file(env.yml):${self:custom.stage}.region}
+  environment: ${file(env.yml):${self:custom.stage}}
+  deploymentBucket: ${self:provider.environment.accountId}.serverless.deploys
+  
+custom:
+  stage: ${opt:stage, self:provider.stage}
+  config: ${file(env.yml):${self:custom.stage}}
+  pythonRequirements:
+    dockerizePip: true
+    pythonBin: C:\Program Files\Python38
+
+functions:
+  ScrapeDogs:
+    handler: src/main.main
+    # module: src
+    memorySize: 512
+    timeout: 15
+    events:
+      - schedule:
+          rate: cron(0 1 * ? 1 *) # each monday at 1 
+          enabled: ${self:custom.config.enableScrapeDogs}
+
+layers:
+  python-app-dependencies:
+    path: layer
+    compatibleRuntimes:
+      - python3.8
+    description: layers
