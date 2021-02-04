@@ -4,7 +4,7 @@ hundar/
 .vscode/
 .serverless/
 __pycache__/
-
+layer/
 src/__pycache__/
 
 node_modules/
