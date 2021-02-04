@@ -2,7 +2,7 @@
 import io
 import pathlib
 import hashlib
-import pandas as pd
+# import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 from PIL import Image
@@ -72,9 +72,9 @@ def parse_image_urls(content, classes, location, source):
 
 
 ## Saves urls as list in csv
-def save_urls_to_csv(image_urls):
-    df = pd.DataFrame({"links": image_urls})
-    df.to_csv("links.csv", index=False, encoding="utf-8")
+# def save_urls_to_csv(image_urls):
+#     df = pd.DataFrame({"links": image_urls})
+#     df.to_csv("links.csv", index=False, encoding="utf-8")
 
 
 ## downloads image from url to directory
@@ -132,7 +132,7 @@ def download_dogs_from_shelter(shelter):
 ## adds current list of dog names to csv file
 def save_names_to_csv(image_urls, dogfile):
     dogs, fields=dogbox.read_csv(dogfile, ",")
-
+    
     dogNames = []
     for url in image_urls:
         dogNames.append(dogname_from_url(url))
@@ -153,28 +153,26 @@ def dogname_from_url(stringToSearch):
     while newIdx != -1 and failsafe > 0:
         failsafe -=1
         newIdx = stringToSearch.find('/', idx+1)
-        length = len(stringToSearch)-newIdx
 
         if not newIdx == -1:
             idx = newIdx
 
     fullName = stringToSearch[idx+1:len(stringToSearch)]
-
-    # surNameIdx = fullName.find('.', len(fullName)-5) # not needed
-    # firstName = fullName[0:surNameIdx]
     dogIdSpan = re.search(r"-\d+x\d+", fullName)
-
     dogName = fullName[0:dogIdSpan.start()]
     
     return dogName
 
 
-def main():
+def main(event, context):
     for shelter in shelters:
         download_dogs_from_shelter(shelter)
+    
+    return 0
 
 
 
 
-# if __name__ == "__main__":  #only executes if imported as main file
-main()
+if __name__ == "__main__":
+
+    main('', '')
