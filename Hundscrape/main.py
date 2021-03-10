@@ -11,6 +11,9 @@ from datetime import date
 import os
 import re
 
+import logging
+import azure.functions as func
+
 import dogcsv
 import dogbox
 
@@ -104,10 +107,6 @@ def download_dogs_from_shelter(shelter):
 
     outFolder = dropbox_path(shelter)
 
-    # if not os.path.isdir(outFolder):
-    #     os.mkdir(outFolder)
-
-    ## TODO: This block will need to be updated for other dog shelters
     for url in shelter["url"]:
         print("collecting dogs")
         print(url)
@@ -117,7 +116,6 @@ def download_dogs_from_shelter(shelter):
         )
         image_urls.extend(url_list)
 
-    # save_urls_to_csv(image_urls)
     save_names_to_csv(image_urls, dogfolder + "/" + shelter["outfile"])
 
     for image_url in image_urls:
@@ -132,13 +130,13 @@ def download_dogs_from_shelter(shelter):
 ## adds current list of dog names to csv file
 def save_names_to_csv(image_urls, dogfile):
     dogs, fields=dogbox.read_csv(dogfile, ",")
-    
+
     dogNames = []
     for url in image_urls:
         dogNames.append(dogname_from_url(url))
 
     today = date.today().strftime("%Y%m%d")
-        
+
     dogs = dogcsv.addDate(dogs, dogNames, today)
     fields.append(today)
     # dogcsv.write_csv_file(dogs, fields, dogfile, ',')
@@ -157,22 +155,36 @@ def dogname_from_url(stringToSearch):
         if not newIdx == -1:
             idx = newIdx
 
-    fullName = stringToSearch[idx+1:len(stringToSearch)]
-    dogIdSpan = re.search(r"-\d+x\d+", fullName)
-    dogName = fullName[0:dogIdSpan.start()]
-    
+    dogName = ""
+
+    try:
+        fullName = stringToSearch[idx+1:len(stringToSearch)]
+        dogIdSpan = re.search(r"-\d+x\d+", fullName)
+        dogName = fullName[0:dogIdSpan.start()]
+    except:
+        print("error while trying to extract dogname")
+        print(stringToSearch)
+        if not fullName == "":
+            print(fullName)
+        if not dogIdSpan == "":
+            print(dogIdSpan)
+
+
     return dogName
 
 
 def main(event, context):
     for shelter in shelters:
         download_dogs_from_shelter(shelter)
-    
+
     return 0
 
-
-
+# def main(req: func.HttpRequest) -> func.HttpResponse:
+#     logging.info('Python HTTP trigger function processed a request.')
+#     return func.HttpResponse(
+#              "Hey, an Azure function!",
+#              status_code=200
+#         )
 
 if __name__ == "__main__":
-
-    main('', '')
+    main('','')
