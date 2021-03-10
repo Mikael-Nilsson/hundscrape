@@ -1,5 +1,7 @@
 "We" are looking into the possibility to adopt a dog from a dog shelter "around here", so I wanted to see how the turnover of available dogs was, how many are adopted and especially how often dogs get returned. So I wrote a small Python script.
 
+20210309: It hit me that selenium is unnessecary in this case, all the data is reachable with a simple REST GET. At the same time I've decided on Azure functions for this project, so I'll be changing that too.
+
 20210204: Just realised I can't reasonably run chromedriver in a lambda, so I'll have to postpone the deploying to AWS for the time being. It s'x, but I guess it's like they say: back to the drawing board. In the meantime I'll simply have to run it manually and locally from time to time.
 
 20210119: Got support for storing images and csvs on Dropbox
@@ -24,10 +26,33 @@ Zipp_34,,Zipp_34
 To install layer libs:
 ````
 pipenv install
-pip install -t layer/python/lib/python3.8/site-package -r ./requirements.txt
+pipenv run pip install -t layer/python/lib/python3.7/site-package -r ./requirements.txt
+````
+
+To run locally:
+````
+pipenv run python src/main.py
 ````
 
 To deploy to AWS:
 ````
 sls deploy --aws-profile <profilename>
+````
+
+### Azure
+To install libs:
+````
+pipenv install
+pipenv run pip freeze > requirements.txt
+pipenv run pip install -t .python_packages/lib/site-packages -r ./requirements.txt
+````
+
+Run locally:
+````
+func start
+````
+
+To deploy to Azure:
+````
+func azure functionapp publish Hundscrape
 ````

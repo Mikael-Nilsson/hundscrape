@@ -1,10 +1,13 @@
 hundar/
 .env
+env.yml
 
-.vscode/
+
 .serverless/
 __pycache__/
 layer/
 src/__pycache__/
 
 node_modules/
+.python_packages
+.venv
