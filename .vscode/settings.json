@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "C:\\Users\\Mikael\\.virtualenvs\\hundscrape-J0Hrt4ZW\\Scripts\\python.exe",
+    "python.pythonPath": "/home/micek/.local/share/virtualenvs/hundscrape-o55L1D3-/bin/python3",
     "azureFunctions.deploySubpath": ".",
     "azureFunctions.scmDoBuildDuringDeployment": true,
     "azureFunctions.pythonVenv": ".venv",
