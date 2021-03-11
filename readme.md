@@ -1,4 +1,8 @@
+# Checking the return rate of dog shelters
+
 "We" are looking into the possibility to adopt a dog from a dog shelter "around here", so I wanted to see how the turnover of available dogs was, how many are adopted and especially how often dogs get returned. So I wrote a small Python script.
+
+20210311: I got the process to work with a REST request to the present shelters and also succeeded in deployment to Azure. So the next step should be to schedule the run. Very nice :).
 
 20210309: It hit me that selenium is unnessecary in this case, all the data is reachable with a simple REST GET. At the same time I've decided on Azure functions for this project, so I'll be changing that too.
 
@@ -34,6 +38,7 @@ To run locally:
 pipenv run python src/main.py
 ````
 
+### AWS
 To deploy to AWS:
 ````
 sls deploy --aws-profile <profilename>
@@ -54,5 +59,17 @@ func start
 
 To deploy to Azure:
 ````
+func azure functionapp publish Hundscrape
+````
+
+Creating a new Azure app:
+````
+func init Hundscrape --python
+cd Hundscrape
+func new --name Hundscrape --template "HTTP trigger" --authlevel "anonymous"
+az login
+az group create --name <RESOURCE_GROUP> --location northeurope
+az storage account create --name <STORAGE_NAME> --location northeurope --resource-group <RESOURCE_GROUP> --sku Standard_LRS
+az functionapp create --resource-group <RESOURCE_GROUP> --consumption-plan-location northeurope --runtime python --runtime-version 3.7 --functions-version 3 --name Hundscrape --storage-account <STORAGE_NAME> --os-type linux
 func azure functionapp publish Hundscrape
 ````
