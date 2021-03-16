@@ -11,3 +11,4 @@ src/__pycache__/
 node_modules/
 .python_packages
 .venv
+local.settings.json
