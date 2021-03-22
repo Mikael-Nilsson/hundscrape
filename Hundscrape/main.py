@@ -27,7 +27,7 @@ shelters = [
 ]
 
 
-def main(req: func.HttpRequest) -> func.HttpResponse:
+def main(OnceAWeek: func.TimerRequest) -> func.HttpResponse:
     logger = logging.getLogger('azure')
     logger.setLevel(logging.DEBUG)
 
@@ -35,10 +35,10 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         logging.info('Scraping dogs')
         scraper.download_dogs_from_shelter(shelter)
 
-    return func.HttpResponse(
-            "It might actually have worked!",
-            status_code=200
-        )
+    # return func.HttpResponse(
+    #         "It might actually have worked!",
+    #         status_code=200
+    #     )
 
 
 if __name__ == "__main__":

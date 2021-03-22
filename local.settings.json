@@ -2,6 +2,10 @@
   "IsEncrypted": false,
   "Values": {
     "FUNCTIONS_WORKER_RUNTIME": "python",
-    "AzureWebJobsStorage": ""
+    "AzureWebJobsStorage": "",
+    "DROPBOX_AUTH_TOKEN": <AUTH-TOKEN>,
+    "DROPBOX_DOGFOLDER": <FOLDER>,
+    "DROPBOX_KEY": <KEY>,
+    "DROPBOX_SECRET": <SECRET>
   }
 }

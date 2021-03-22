@@ -2,18 +2,11 @@
   "scriptFile": "main.py",
   "bindings": [
     {
+      "name": "OnceAWeek",
       "authLevel": "Function",
-      "type": "httpTrigger",
+      "type": "timerTrigger",
       "direction": "in",
-      "name": "req",
-      "methods": [
-        "get"
-      ]
-    },
-    {
-      "type": "http",
-      "direction": "out",
-      "name": "$return"
+      "schedule": "0 0 2 * * Fri"
     }
   ]
 }
