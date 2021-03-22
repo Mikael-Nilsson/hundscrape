@@ -2,6 +2,8 @@
 
 "We" are looking into the possibility to adopt a dog from a dog shelter "around here", so I wanted to see how the turnover of available dogs was, how many are adopted and especially how often dogs get returned. So I wrote a small Python script.
 
+20210322: The timer trigger is now working, so now the script runs once a week, checking the current dog state. It works!
+
 20210311: I got the process to work with a REST request to the present shelters and also succeeded in deployment to Azure. So the next step should be to schedule the run. Very nice :).
 
 20210309: It hit me that selenium is unnessecary in this case, all the data is reachable with a simple REST GET. At the same time I've decided on Azure functions for this project, so I'll be changing that too.
